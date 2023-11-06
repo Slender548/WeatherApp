@@ -121,7 +121,7 @@ class WeatherApp(QMainWindow):
             random_set = random.randint(1,3)
 
     def find_out_weather(self):
-
+        ...
 
     def find_temp(self):
         ...
