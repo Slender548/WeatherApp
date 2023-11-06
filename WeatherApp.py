@@ -46,12 +46,15 @@ class WeatherApp(QMainWindow):
         self.time_label = QLabel(time.strftime("%H:%M"), self)
         self.time_label.setFont(QFont("Roboto", 26))
         self.time_label.setStyleSheet("color: white;background-color: black;")
+        self.time_label.setAlignment(Qt.AlignCenter)
         self.description_label = QLabel(forecast['weather'][0]['main'], self)
         self.description_label.setFont(QFont("Roboto", 26))
         self.description_label.setStyleSheet("color: white;background-color: black;")
+        self.description_label.setAlignment(Qt.AlignCenter)
         temperature_label = QLabel(str(forecast['main']['temp'])+"°C", self)
         temperature_label.setFont(QFont("Roboto", 26))
         temperature_label.setStyleSheet("color: white;background-color: black;")
+        temperature_label.setAlignment(Qt.AlignCenter)
         labels_layout = QHBoxLayout()
         labels_layout.addWidget(self.description_label)
         labels_layout.addWidget(self.time_label)
@@ -114,6 +117,11 @@ class WeatherApp(QMainWindow):
             random_set = random.randint(1, 3)
             sunny_set = f"background-image: url(Backgrounds/Sunny_{random_set}.jpg);"
             self.background.setStyleSheet(sunny_set)
+        elif self.description_label.text() == "Clear":
+            random_set = random.randint(1,3)
+
+    def find_out_weather(self):
+
 
     def find_temp(self):
         ...
