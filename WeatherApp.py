@@ -12,7 +12,6 @@ data = json.loads(response.text)
 city = data['city']
 API_key = ""
 
-# forecast = data.json()
 forcast = requests.get(f"https://api.openweathermap.org/data/2.5/forecast?q={city}&appid={API_key}&units=metric")
 datum = json.loads(forcast.text)['list'][2:]
 target_time = ["12:00:00", "18:00:00"]
@@ -37,7 +36,7 @@ class WeatherApp(QMainWindow):
         self.fill_square()
         self.set_note()
         self.set_input()
-        self.set_forecast()
+        self.set_forecasts()
         self.order_everything()
         self.fill_background()
         self.set_timer()
@@ -77,7 +76,7 @@ class WeatherApp(QMainWindow):
 
     def set_background(self) -> None:
         self.background = QFrame(self)
-        self.background.setFixedSize(1500, 1100)
+        self.background.setFixedSize(1500, 1300)
         self.setWindowTitle('Weather App')
         self.setWindowIcon(QIcon('icon.png'))
         self.setFixedSize(1300, 900)
@@ -100,57 +99,48 @@ class WeatherApp(QMainWindow):
         self.find_city.setAlignment(Qt.AlignCenter)
         self.find_city.setFont(QFont("Roboto", 40))
 
-    def set_forecast(self) -> None:
+    def set_forecasts(self):
         self.forecast_1 = QFrame(self)
-        self.forecast_1.setFrameShape(QFrame.StyledPanel)
-        self.forecast_1.setFrameShadow(QFrame.Raised)
-        self.forecast_1.setStyleSheet("background-color: black;border-radius: 20px;")
-        self.forecast_1.setFixedSize(150, 200)
+        self.set_forecast(self.forecast_1)
         self.forecast_2 = QFrame(self)
-        self.forecast_2.setFrameShape(QFrame.StyledPanel)
-        self.forecast_2.setFrameShadow(QFrame.Raised)
-        self.forecast_2.setStyleSheet("background-color: black;border-radius: 20px;")
-        self.forecast_2.setFixedSize(150, 200)
+        self.set_forecast(self.forecast_2)
         self.forecast_3 = QFrame(self)
-        self.forecast_3.setFrameShape(QFrame.StyledPanel)
-        self.forecast_3.setFrameShadow(QFrame.Raised)
-        self.forecast_3.setStyleSheet("background-color: black;border-radius: 20px;")
-        self.forecast_3.setFixedSize(150, 200)
+        self.set_forecast(self.forecast_3)
         self.forecast_4 = QFrame(self)
-        self.forecast_4.setFrameShape(QFrame.StyledPanel)
-        self.forecast_4.setFrameShadow(QFrame.Raised)
-        self.forecast_4.setStyleSheet("background-color: black;border-radius: 20px;")
-        self.forecast_4.setFixedSize(150, 200)
+        self.set_forecast(self.forecast_4)
         self.forecast_5 = QFrame(self)
-        self.forecast_5.setFrameShape(QFrame.StyledPanel)
-        self.forecast_5.setFrameShadow(QFrame.Raised)
-        self.forecast_5.setStyleSheet("background-color: black;border-radius: 20px;")
-        self.forecast_5.setFixedSize(150, 200)
+        self.set_forecast(self.forecast_5)
         self.forecast_6 = QFrame(self)
-        self.forecast_6.setFrameShape(QFrame.StyledPanel)
-        self.forecast_6.setFrameShadow(QFrame.Raised)
-        self.forecast_6.setStyleSheet("background-color: black;border-radius: 20px;")
-        self.forecast_6.setFixedSize(150, 200)
+        self.set_forecast(self.forecast_6)
         self.forecast_7 = QFrame(self)
-        self.forecast_7.setFrameShape(QFrame.StyledPanel)
-        self.forecast_7.setFrameShadow(QFrame.Raised)
-        self.forecast_7.setStyleSheet("background-color: black;border-radius: 20px;")
+        self.set_forecast(self.forecast_7)
+        self.forecast_1.setFixedSize(150, 200)
+        self.forecast_2.setFixedSize(150, 200)
+        self.forecast_3.setFixedSize(150, 200)
+        self.forecast_4.setFixedSize(150, 200)
+        self.forecast_5.setFixedSize(150, 200)
+        self.forecast_6.setFixedSize(150, 200)
         self.forecast_7.setFixedSize(150, 200)
+
+    def set_forecast(self, forecast: QFrame) -> None:
+        forecast.setFrameShape(QFrame.StyledPanel)
+        forecast.setFrameShadow(QFrame.Raised)
+        forecast.setStyleSheet("background-color: black;border-radius: 15px;")
+
+    def fill_background_helper(self, set: int, weather: str):
+        sett = f"background-image: url(Backgrounds/{weather}/{weather}_{set}.jpg);"
+        self.background.setStyleSheet(sett)
 
     def fill_background(self) -> None:
         if self.description_label.text() == "Sunny":
             random_set = random.randint(1, 8)
-            sett = f"background-image: url(Backgrounds/Sunny/Sunny_{random_set}.jpg);"
-            self.background.setStyleSheet(sett)
+            self.fill_background_helper(random_set, "Sunny")
         elif self.description_label.text() == "Clear":
             random_set = random.randint(1, 4)
-            sett = f"background-image: url(Backgrounds/Clear/Clear_{random_set}.jpg);"
-            self.background.setStyleSheet(sett)
-
+            self.fill_background_helper(random_set, "Clear")
         elif self.description_label.text() == "Clouds":
             random_set = random.randint(1, 5)
-            sett = f"background-image: url(Backgrounds/Clouds/Clouds_{random_set}.jpg);"
-            self.background.setStyleSheet(sett)
+            self.fill_background_helper(random_set,"Clouds")
 
     def fill_square(self) -> None:
         self.labels_layout = QHBoxLayout()
@@ -199,7 +189,6 @@ class WeatherApp(QMainWindow):
 
     def populate_forecast_frame(self):
         ...
-
 
 if __name__ == "__main__":
     application = QApplication([])
